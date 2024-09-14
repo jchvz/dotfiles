@@ -24,10 +24,14 @@
       shellAbbrs={
         # Git
         gs="git status";
+	gnew="git push --set-upstream origin (git branch --show-current)";
 
 	# Nix
 	nxc="sudo -E nvim /etc/nixos/configuration.nix";
 	nxs="sudo nixos-rebuild switch";
+
+	# Misc
+	cat="bat";
       };
     };
     fzf = {
@@ -56,14 +60,18 @@
   };
 
 
+
+
   # system packages
   environment.systemPackages = with pkgs; [
+    bat
     go
     gcc
     zig
     nodejs
     gnumake
     ripgrep
+    tree
   ];
 
   # env vars
@@ -71,7 +79,6 @@
     XDG_CONFIG_HOME="$HOME/.config";
     EDITOR="nvim";
   };
-
   # https://github.com/nix-community/NixOS-WSL
   wsl.enable = true;
   wsl.defaultUser = "john";
