@@ -34,6 +34,7 @@ in
 
 	# Misc
 	cat="bat";
+  vim="nvim";
       };
     };
     fzf = {
@@ -75,6 +76,11 @@ in
     ripgrep
     tree
     customNeovim
+    zip
+    unzip
+    # language servers
+    lua-language-server
+    nil
   ];
 
   # env vars
