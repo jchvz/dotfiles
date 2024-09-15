@@ -1,5 +1,7 @@
 { config, lib, pkgs, ... }:
-
+let
+  customNeovim = import ./derivations/nvim.nix { inherit pkgs lib; };
+in
 {
   imports = [
     <nixos-wsl/modules>
@@ -51,10 +53,10 @@
 	hide_userland_threads=true;
       };
     };
-    neovim = {
-      enable=true;
-      vimAlias=true;
-    };
+      #neovim = {
+      #enable=true;
+      #vimAlias=true;
+    #};
     npm.enable=true;
     #ssh.enable=true;
   };
@@ -72,6 +74,7 @@
     gnumake
     ripgrep
     tree
+    customNeovim
   ];
 
   # env vars
