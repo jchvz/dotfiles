@@ -1,5 +1,7 @@
 { config, lib, pkgs, ... }:
-
+let
+  customNeovim = import ./derivations/nvim.nix { inherit pkgs lib; };
+in
 {
   imports = [
     <nixos-wsl/modules>
@@ -24,10 +26,15 @@
       shellAbbrs={
         # Git
         gs="git status";
+	gnew="git push --set-upstream origin (git branch --show-current)";
 
 	# Nix
 	nxc="sudo -E nvim /etc/nixos/configuration.nix";
 	nxs="sudo nixos-rebuild switch";
+
+	# Misc
+	cat="bat";
+  vim="nvim";
       };
     };
     fzf = {
@@ -47,23 +54,33 @@
 	hide_userland_threads=true;
       };
     };
-    neovim = {
-      enable=true;
-      vimAlias=true;
-    };
+      #neovim = {
+      #enable=true;
+      #vimAlias=true;
+    #};
     npm.enable=true;
     #ssh.enable=true;
   };
 
 
+
+
   # system packages
   environment.systemPackages = with pkgs; [
+    bat
     go
     gcc
     zig
     nodejs
     gnumake
     ripgrep
+    tree
+    customNeovim
+    zip
+    unzip
+    # language servers
+    lua-language-server
+    nil
   ];
 
   # env vars
@@ -71,7 +88,6 @@
     XDG_CONFIG_HOME="$HOME/.config";
     EDITOR="nvim";
   };
-
   # https://github.com/nix-community/NixOS-WSL
   wsl.enable = true;
   wsl.defaultUser = "john";
