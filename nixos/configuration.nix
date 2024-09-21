@@ -27,6 +27,7 @@ in
         # Git
         gs="git status";
 	gnew="git push --set-upstream origin (git branch --show-current)";
+	gmods="git submodule deinit -f .; git submodule update --init";
 
 	# Nix
 	nxc="sudo -E nvim /etc/nixos/configuration.nix";
