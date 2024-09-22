@@ -11,60 +11,57 @@ in
     shell = pkgs.fish;
   };
 
-  nix.gc={
-    automatic=true;
-    dates="03:13"; #3h13m
-    options="-d";
+  nix.gc = {
+    automatic = true;
+    dates = "03:13"; #3h13m
+    options = "-d";
   };
-  nixpkgs.config.allowUnfree=true;
+  nixpkgs.config.allowUnfree = true;
 
 
   # builtlin programs
   programs = {
     fish = {
-      enable=true;
-      shellAbbrs={
+      enable = true;
+      shellAbbrs = {
         # Git
-        gs="git status";
-	gnew="git push --set-upstream origin (git branch --show-current)";
-	gmods="git submodule deinit -f .; git submodule update --init";
+        gs = "git status";
+        gnew = "git push --set-upstream origin (git branch --show-current)";
+        gmods = "git submodule deinit -f .; git submodule update --init";
 
-	# Nix
-	nxc="sudo -E nvim /etc/nixos/configuration.nix";
-	nxs="sudo nixos-rebuild switch";
+        # Nix
+        nxc = "sudo -E nvim /etc/nixos/configuration.nix";
+        nxs = "sudo nixos-rebuild switch";
 
-	# Misc
-	cat="bat";
-  vim="nvim";
+        # Misc
+        cat = "bat";
+        vim = "nvim";
       };
     };
     fzf = {
-      keybindings=true;
-      fuzzyCompletion=true;
+      keybindings = true;
+      fuzzyCompletion = true;
     };
     git = {
-      enable=true;
+      enable = true;
       config = {
-        init.defaultBranch="master";
+        init.defaultBranch = "master";
       };
     };
     htop = {
-      enable=true;
-      settings={
-        hide_kernel_threads=true;
-	hide_userland_threads=true;
+      enable = true;
+      settings = {
+        hide_kernel_threads = true;
+        hide_userland_threads = true;
       };
     };
-      #neovim = {
-      #enable=true;
-      #vimAlias=true;
+    #neovim = {
+    #enable=true;
+    #vimAlias=true;
     #};
-    npm.enable=true;
+    npm.enable = true;
     #ssh.enable=true;
   };
-
-
-
 
   # system packages
   environment.systemPackages = with pkgs; [
@@ -79,20 +76,22 @@ in
     customNeovim
     zip
     unzip
-    # language servers
+    # language servers and formatters
     lua-language-server
+    stylua
     nil
+    nixpkgs-fmt
   ];
 
   # env vars
   environment.variables = {
-    XDG_CONFIG_HOME="$HOME/.config";
-    EDITOR="nvim";
+    XDG_CONFIG_HOME = "$HOME/.config";
+    EDITOR = "nvim";
   };
   # https://github.com/nix-community/NixOS-WSL
   wsl.enable = true;
   wsl.defaultUser = "john";
-  
+
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
