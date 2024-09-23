@@ -22,4 +22,8 @@ function M.rename_symbol()
   }
 end
 
+function M.find_usages()
+  require('telescope.builtin').lsp_references()
+end
+
 return M

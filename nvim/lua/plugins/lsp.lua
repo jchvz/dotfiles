@@ -10,7 +10,8 @@ return {
 
     -- All LSP servers get cool keybindings
     km.setkm('lr', lsp_utils.rename_symbol, '[L]sp [R]ename')
-    km.setkm('lh', vim.lsp, '[L]sp [H]elp')
+    km.setkm('lh', vim.lsp.buf.hover, '[L]sp [H]over')
+    km.setkm('lu', lsp_utils.find_usages, '[L]sp [U]sages')
 
     -- Lua specific config
     local lua_ls_binary = '/run/current-system/sw/bin/lua-language-server'
