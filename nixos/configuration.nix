@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ lib, pkgs, ... }:
 let
   customNeovim = import ./derivations/nvim.nix { inherit pkgs lib; };
 in
@@ -87,6 +87,7 @@ in
   environment.variables = {
     XDG_CONFIG_HOME = "$HOME/.config";
     EDITOR = "nvim";
+    BAT_THEME = "OneHalfLight";
   };
   # https://github.com/nix-community/NixOS-WSL
   wsl.enable = true;
