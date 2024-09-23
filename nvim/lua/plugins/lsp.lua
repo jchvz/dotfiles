@@ -1,4 +1,5 @@
 local lsp_utils = require 'utils.lsp'
+local km = require 'utils.km'
 
 return {
   'neovim/nvim-lspconfig',
@@ -7,8 +8,9 @@ return {
 
     local capz = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-    -- All LSP servers get rename symbol func
-    require('utils.km').setkm('lr', lsp_utils.rename_symbol, '[L]sp [R]ename')
+    -- All LSP servers get cool keybindings
+    km.setkm('lr', lsp_utils.rename_symbol, '[L]sp [R]ename')
+    km.setkm('lh', vim.lsp, '[L]sp [H]elp')
 
     -- Lua specific config
     local lua_ls_binary = '/run/current-system/sw/bin/lua-language-server'
