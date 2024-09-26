@@ -1,13 +1,14 @@
 { lib, pkgs, ... }:
 let
-  customNeovim = import ./derivations/nvim.nix { inherit pkgs lib; };
+  #customNeovim = import ./derivations/nvim.nix { inherit pkgs lib; };
+  patchTar = import ./utils/patchTar.nix { inherit pkgs; };
 in
 {
   imports = [
     <nixos-wsl/modules>
   ];
 
-  users.users.john = {
+  users. users. john = {
     shell = pkgs.fish;
   };
 
@@ -38,6 +39,7 @@ in
         # Nix
         nxc = "sudo -E nvim /etc/nixos/configuration.nix";
         nxs = "sudo nixos-rebuild switch";
+        nxurl = "nix-prefetch-url";
 
         # Transparent replacements
         cat = "bat";
@@ -82,7 +84,18 @@ in
     ripgrep
     fd
     tree
-    customNeovim
+
+    (patchTar.download {
+      pname = "neovim";
+      bname = "nvim";
+      version = "0.10.1";
+      sha256 = "14wp3y7p049zvs9h5k43dsix63hbnham5apq0bwq6q3zl40xwrs8";
+      url = "https://github.com/neovim/neovim/releases/download/v0.10.1/nvim-linux64.tar.gz";
+      buildInputs = [ pkgs.libgcc ];
+    })
+
+
+    #customNeovim
     zip
     unzip
     # language servers and formatters

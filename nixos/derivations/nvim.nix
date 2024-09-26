@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 pkgs.stdenv.mkDerivation rec {
   pname = "neovim";
@@ -20,18 +20,13 @@ pkgs.stdenv.mkDerivation rec {
   ];
 
   installPhase = ''
-    mkdir -p $out/bin $out/share
+    mkdir -p $out/bin
     tar -xvf $src --strip-components=1 -C $out
     chmod +x $out/bin/nvim
-    #mkdir -p $out
-    #tar -xvf $src -C $out
-    #chmod +x $out/nvim-linux64/bin/nvim
   '';
 
-  meta = with lib; {
-    description = "Neovim text editor - prebuilt binary from GitHub";
-    #license = lib.licenses.apache2; # Correctly reference licenses
-    maintainers = [ ]; # Empty maintainers for now
+  meta = {
+    description = "${pname}: patchelfed pre-built binary from tar";
   };
 }
 
