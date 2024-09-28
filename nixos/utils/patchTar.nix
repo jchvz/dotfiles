@@ -2,32 +2,30 @@
 {
   download =
     { bname
-    , bpath
+    , pname
     , version
     , url
     , sha256
     , buildInputs
     }:
     pkgs.stdenv.mkDerivation {
-      inherit version;
-      pname = bname;
+      inherit pname version;
 
       src = pkgs.fetchurl {
         inherit url sha256;
       };
 
-      buildInputs = [ pkgs.libgcc ] ++ buildInputs; # jchvz: most things need libgcc
+      buildInputs = buildInputs;
       nativeBuildInputs = [ pkgs.makeWrapper pkgs.autoPatchelfHook ];
 
       installPhase = ''
         mkdir -p $out/bin
-        tar -xvf $src --strip-components=1
-        mv ${bpath} $out/bin/${bname}
+        tar -xvf $src --strip-components=1 -C $out
         chmod +x $out/bin/${bname}
       '';
 
       meta = {
-        description = "${bname}: downloaded & patched pre-built binary from tar";
+        description = "${pname}: downloaded & patched pre-built binary from tar";
       };
     };
 }

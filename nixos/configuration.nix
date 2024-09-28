@@ -1,5 +1,6 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 let
+  #customNeovim = import ./derivations/nvim.nix { inherit pkgs lib; };
   patchTar = import ./utils/patchTar.nix { inherit pkgs; };
 in
 {
@@ -74,17 +75,7 @@ in
 
   # system packages
   environment.systemPackages = with pkgs; [
-    (
-      patchTar.download {
-        bname = "bat";
-        bpath = "bat";
-        version = "v0.24.0";
-        url = "https://github.com/sharkdp/bat/releases/download/v0.24.0/bat-v0.24.0-x86_64-unknown-linux-gnu.tar.gz";
-        sha256 = "0yn74pws9ry23vv1d2w1r6nh9jfmhzv3pjax9691py2vp18mvbqg";
-        buildInputs = [ ];
-      }
-    )
-
+    bat
     go
     gcc
     zig
@@ -95,18 +86,18 @@ in
     tree
 
     (patchTar.download {
+      pname = "neovim";
       bname = "nvim";
-      bpath = "bin/nvim";
       version = "0.10.1";
-      url = "https://github.com/neovim/neovim/releases/download/v0.10.1/nvim-linux64.tar.gz";
       sha256 = "14wp3y7p049zvs9h5k43dsix63hbnham5apq0bwq6q3zl40xwrs8";
-      buildInputs = [ ];
+      url = "https://github.com/neovim/neovim/releases/download/v0.10.1/nvim-linux64.tar.gz";
+      buildInputs = [ pkgs.libgcc ];
     })
 
 
+    #customNeovim
     zip
     unzip
-
     # language servers and formatters
     lua-language-server
     stylua
