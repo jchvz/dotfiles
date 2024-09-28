@@ -7,7 +7,18 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Clipboard
-vim.opt.clipboard = 'unnamedplus'
+
+local function paste()
+  local result = vim.fn.systemlist 'powershell.exe -noprofile -command Get-Clipboard'
+  -- Get-Clipboard adds weird `^M` artifacts
+  return vim.fn.join(
+    vim.fn.map(result, function(_, line)
+      return line:gsub('\r', '')
+    end),
+    '\n'
+  )
+end
+
 vim.g.clipboard = {
   name = 'WSLClipboard',
   copy = {
@@ -15,8 +26,8 @@ vim.g.clipboard = {
     ['*'] = 'clip.exe',
   },
   paste = {
-    ['+'] = 'powershell.exe -noprofile -command Get-Clipboard',
-    ['*'] = 'powershell.exe -noprofile -command Get-Clipboard',
+    ['+'] = paste,
+    ['*'] = paste,
   },
   cache_enabled = 0,
 }
