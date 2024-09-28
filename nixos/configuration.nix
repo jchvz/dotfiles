@@ -76,7 +76,6 @@ in
     customNeovim
     zip
     unzip
-
     # language servers and formatters
     lua-language-server
     stylua
