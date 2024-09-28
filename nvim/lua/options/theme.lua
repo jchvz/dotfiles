@@ -1,5 +1,4 @@
 vim.opt.background = 'light'
---vim.cmd 'colorscheme everforest'
 
 -- Custom theme is currently not in use, but I want to use it eventually
 
