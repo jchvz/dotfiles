@@ -5,6 +5,7 @@ return {
       formatters_by_ft = {
         lua = { 'stylua' },
         nix = { 'nixpkgs_fmt' },
+        go = { 'gofmt' },
         --python = { 'black' },
         --javascript = { 'prettier' },
         -- Add more filetypes and formatters as needed

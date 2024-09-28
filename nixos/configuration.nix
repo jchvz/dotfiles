@@ -101,6 +101,7 @@ in
     stylua
     nil
     nixpkgs-fmt
+    gopls
   ];
 
   # env vars
