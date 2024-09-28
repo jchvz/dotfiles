@@ -1,11 +1,9 @@
--- lua/plugins/lualine.lua
-
 return {
   'nvim-lualine/lualine.nvim',
   config = function()
     require('lualine').setup {
       options = {
-        theme = 'solarized_light',
+        theme = 'everforest',
         component_separators = { left = '', right = '' },
         section_separators = { left = '', right = '' },
         globalstatus = true,

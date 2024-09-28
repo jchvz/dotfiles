@@ -1,4 +1,6 @@
--- lua/plugins/theme.lua
+vim.opt.background = 'light'
+
+-- Custom theme is currently not in use, but I want to use it eventually
 
 local solarized_light = {
   base03 = '#002b36',
@@ -63,4 +65,4 @@ local function apply_colorscheme()
 end
 
 -- Automatically apply the theme on startup
-apply_colorscheme()
+--apply_colorscheme()
