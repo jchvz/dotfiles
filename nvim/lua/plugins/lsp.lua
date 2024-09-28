@@ -39,6 +39,13 @@ return {
     }
 
     -- Nix specific config
-    nvim_lsp.nil_ls.setup {}
+    nvim_lsp.nil_ls.setup {
+      capabilities = capz,
+    }
+
+    -- Golang specific config
+    nvim_lsp.gopls.setup {
+      capabilities = capz,
+    }
   end,
 }
