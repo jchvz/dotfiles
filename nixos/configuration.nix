@@ -76,11 +76,15 @@ in
     customNeovim
     zip
     unzip
+    #xclip
+    wl-clipboard
+
     # language servers and formatters
     lua-language-server
     stylua
     nil
     nixpkgs-fmt
+    gopls
   ];
 
   # env vars
