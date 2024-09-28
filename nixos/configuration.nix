@@ -24,13 +24,11 @@ in
   programs = {
     fish = {
       enable = true;
-      shellAliases = {
-        git_log_pretty = "git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
-      };
+      shellAliases = { };
       shellAbbrs = {
         # Git
         gs = "git status";
-        gl = "git_log_prety";
+        gl = "git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
         gnew = "git push --set-upstream origin (git branch --show-current)";
         gmods = "git submodule deinit -f .; git submodule update --init";
         cherry = "git cherry-pick";
