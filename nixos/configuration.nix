@@ -1,13 +1,16 @@
 { lib, pkgs, ... }:
 let
-  customNeovim = import ./derivations/nvim.nix { inherit pkgs lib; };
+  patchTar = import ./utils/patchTar.nix { inherit pkgs; };
+  rustPkg = import ./utils/rustGithub.nix {
+    inherit pkgs lib;
+  };
 in
 {
   imports = [
     <nixos-wsl/modules>
   ];
 
-  users.users.john = {
+  users. users. john = {
     shell = pkgs.fish;
   };
 
@@ -23,19 +26,26 @@ in
   programs = {
     fish = {
       enable = true;
+      shellAliases = { };
       shellAbbrs = {
         # Git
         gs = "git status";
+        gl = "git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
         gnew = "git push --set-upstream origin (git branch --show-current)";
         gmods = "git submodule deinit -f .; git submodule update --init";
+        cherry = "git cherry-pick";
+        #pr_summary = "";
 
         # Nix
         nxc = "sudo -E nvim /etc/nixos/configuration.nix";
         nxs = "sudo nixos-rebuild switch";
+        nxurl = "nix-prefetch-url";
 
-        # Misc
+        # Transparent replacements
         cat = "bat";
         vim = "nvim";
+        grep = "rg";
+        find = "fd";
       };
     };
     fzf = {
@@ -65,17 +75,70 @@ in
 
   # system packages
   environment.systemPackages = with pkgs; [
-    bat
     go
     gcc
     zig
     nodejs
     gnumake
-    ripgrep
     tree
-    customNeovim
     zip
     unzip
+
+    (rustPkg {
+      owner = "BurntSushi";
+      pname = "ripgrep";
+      version = "14.1.1";
+      sha256 = "1s39cgazg9m5yrfyjh4qxgjwmvnn8znx8l09a6byh0zm31maf9c3";
+    })
+
+    (rustPkg {
+      owner = "sharkdp";
+      pname = "fd";
+      version = "v10.2.0";
+      sha256 = "0hhcc9lvjxqipi48i1rhl6p86i5pjls4yk8l8wjba7qg3ai4xs87";
+    })
+
+    (rustPkg {
+      owner = "sharkdp";
+      pname = "bat";
+      version = "v0.24.0";
+      sha256 = "0922wccggbmxjz7am0da50bqfl2gmfsnw446s0gk7zlq94jfa66m";
+      buildInputs = [
+        # pkgs.more
+        # pkgs.most
+      ];
+      testsToSkip = [
+        # there are 15 bat integration tests that try to make use of a fancy function
+        # `with_mocked_versions_of_more_and_most_in_path`. However, in nixos, those
+        # mocked utils are not accessible during the test runtime. So the tests fail.
+        "alias_pager_disable_long_overrides_short"
+        "config_read_arguments_from_file"
+        "env_var_bat_paging"
+        "pager_arg_override_env_noconfig"
+        "pager_arg_override_env_withconfig"
+        "pager_basic"
+        "pager_basic_arg"
+        "pager_env_bat_pager_override_config"
+        "pager_env_pager_nooverride_config"
+        "pager_more"
+        "pager_most_from_bat_pager_env_var"
+        "pager_most_from_pager_arg"
+        "pager_most_from_pager_env_var"
+        "pager_most_with_arg"
+        "pager_overwrite"
+      ];
+    })
+
+    (patchTar.download {
+      pname = "neovim";
+      bname = "nvim";
+      version = "0.10.1";
+      sha256 = "14wp3y7p049zvs9h5k43dsix63hbnham5apq0bwq6q3zl40xwrs8";
+      url = "https://github.com/neovim/neovim/releases/download/v0.10.1/nvim-linux64.tar.gz";
+      buildInputs = [ pkgs.libgcc ];
+    })
+
+
     # language servers and formatters
     lua-language-server
     stylua
@@ -89,16 +152,21 @@ in
     XDG_CONFIG_HOME = "$HOME/.config";
     EDITOR = "nvim";
     BAT_THEME = "OneHalfLight";
+
+    # Fzf config
+    FZF_DEFAULT_COMMAND = "fd -H";
+    FZF_DEFAULT_OPTS = "--height 100";
+    FZF_CTRL_T_COMMAND = "fd -H";
+    FZF_CTRL_T_OPTS = ";
+      --preview 'bat -n --color=always --theme=OneHalfLight {}'
+      --bind 'ctrl-/:change-preview-window(down|hidden|)'";
+    FZF_ALT_C_OPTS = "--preview 'tree -C {}'";
   };
   # https://github.com/nix-community/NixOS-WSL
   wsl.enable = true;
   wsl.defaultUser = "john";
 
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It's perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.11"; # Did you read the comment?
