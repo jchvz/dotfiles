@@ -1,8 +1,8 @@
 # Dotfiles
 
-Here lie muh dotfiles
+Here lie muh dotfiles for configuring NixOS in WSL2 with neovim.
 
 ### Symlinks
 
-- ./nixos/configuration.nix => /etc/nixos/configuration.nix
-- ./nvim => ~/.config/nvim/
+- ./nixos => /etc/nixos
+- ./nvim => ~/.config/nvim
