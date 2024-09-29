@@ -7,7 +7,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Clipboard
-
+vim.opt.clipboard = 'unnamedplus'
 local function paste()
   local result = vim.fn.systemlist 'powershell.exe -noprofile -command Get-Clipboard'
   -- Get-Clipboard adds weird `^M` artifacts
