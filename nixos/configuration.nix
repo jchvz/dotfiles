@@ -40,6 +40,9 @@ in
         nxs = "sudo nixos-rebuild switch";
         nxurl = "nix-prefetch-url";
 
+        # Docker
+        dps = "docker ps";
+
         # Transparent replacements
         cat = "bat";
         vim = "nvim";
@@ -91,6 +94,15 @@ in
       repoHash = "sha256-2rnaPN4C4pn9Whk5X2z1VVxm679EUpQdumJZx5uulr4=";
       vendorHash = "sha256-mLMOArOz7TPYvHWtAtwCMV/LWMC8CkMDGFBDYW1Z4NM=";
       cmd = "cmd/swag";
+    })
+
+    (derive.go {
+      owner = "wagoodman";
+      pname = "dive";
+      version = "v0.12.0";
+      repoHash = "sha256-CuVRFybsn7PVPgz3fz5ghpjOEOsTYTv6uUAgRgFewFw=";
+      vendorHash = "sha256-268qJPhGEd3BQdnalgHj102opOv7CV2Mkz1x+5Ztn/k=";
+      cmd = ".";
     })
 
     (derive.rust {
@@ -154,6 +166,14 @@ in
     nil
     nixpkgs-fmt
     gopls
+    # (derive.go{
+    #   pname = "tools";
+    #   owner = "golang";
+    #   version = "gopls/v0.16.2";
+    #   repoHash = "sha256-amy00VMUcmyjDoZ4d9/+YswfcZ+1/cGvFsA4sAmc1dA=";
+    #   vendorHash = "sha256-hvxH1aaaDy+ahkKiq6QCQXQpMrobq8jZSW2OrDtqm10=";
+    #   cmd = "gopls/main.go";
+    # })
   ];
 
   # env vars
