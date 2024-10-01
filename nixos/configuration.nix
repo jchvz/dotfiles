@@ -1,9 +1,6 @@
 { lib, pkgs, ... }:
 let
-  patchTar = import ./utils/patchTar.nix { inherit pkgs; };
-  rustPkg = import ./utils/rustGithub.nix {
-    inherit pkgs lib;
-  };
+  derive = import ./utils/derive.nix {inherit pkgs lib;};
 in
 {
   imports = [
@@ -84,21 +81,21 @@ in
     zip
     unzip
 
-    (rustPkg {
+    (derive.rust {
       owner = "BurntSushi";
       pname = "ripgrep";
       version = "14.1.1";
       sha256 = "1s39cgazg9m5yrfyjh4qxgjwmvnn8znx8l09a6byh0zm31maf9c3";
     })
 
-    (rustPkg {
+    (derive.rust {
       owner = "sharkdp";
       pname = "fd";
       version = "v10.2.0";
       sha256 = "0hhcc9lvjxqipi48i1rhl6p86i5pjls4yk8l8wjba7qg3ai4xs87";
     })
 
-    (rustPkg {
+    (derive.rust {
       owner = "sharkdp";
       pname = "bat";
       version = "v0.24.0";
@@ -129,7 +126,7 @@ in
       ];
     })
 
-    (patchTar.download {
+    (derive.tar {
       pname = "neovim";
       bname = "nvim";
       version = "0.10.1";
