@@ -10,27 +10,19 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Clipboard
+-- Unfortunately, we have to presuppose that Windows has been configured with win32yank.exe
+-- installed + on the path. For posterity, the install script used in PowerShell on Windows:
+-- winget install --id=equalsraf.win32yank -e
 vim.opt.clipboard = "unnamedplus"
-local function paste()
-  local result = vim.fn.systemlist("powershell.exe -noprofile -command Get-Clipboard")
-  -- Get-Clipboard adds weird `^M` artifacts
-  return vim.fn.join(
-    vim.fn.map(result, function(_, line)
-      return line:gsub("\r", "")
-    end),
-    "\n"
-  )
-end
-
 vim.g.clipboard = {
   name = "WSLClipboard",
   copy = {
-    ["+"] = "clip.exe",
-    ["*"] = "clip.exe",
+    ["+"] = "win32yank.exe -i",
+    ["*"] = "win32yank.exe -i",
   },
   paste = {
-    ["+"] = paste,
-    ["*"] = paste,
+    ["+"] = "win32yank.exe -o",
+    ["*"] = "win32yank.exe -o",
   },
-  cache_enabled = 0,
+  --   cache_enabled = 0,
 }
