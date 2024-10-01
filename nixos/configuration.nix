@@ -1,9 +1,6 @@
 { lib, pkgs, ... }:
 let
-  patchTar = import ./utils/patchTar.nix { inherit pkgs; };
-  rustPkg = import ./utils/rustGithub.nix {
-    inherit pkgs lib;
-  };
+  derive = import ./utils/derive.nix {inherit pkgs lib;};
 in
 {
   imports = [
@@ -12,6 +9,7 @@ in
 
   users. users. john = {
     shell = pkgs.fish;
+    extraGroups = ["docker"];
   };
 
   nix.gc = {
@@ -21,6 +19,7 @@ in
   };
   nixpkgs.config.allowUnfree = true;
 
+  virtualisation.docker.enable=true;
 
   # builtlin programs
   programs = {
@@ -40,6 +39,9 @@ in
         nxc = "sudo -E nvim /etc/nixos/configuration.nix";
         nxs = "sudo nixos-rebuild switch";
         nxurl = "nix-prefetch-url";
+
+        # Docker
+        dps = "docker ps";
 
         # Transparent replacements
         cat = "bat";
@@ -83,22 +85,50 @@ in
     tree
     zip
     unzip
+    docker
 
-    (rustPkg {
+    (derive.go {
+      owner = "swaggo";
+      pname = "swag";
+      version = "v1.8.12";
+      repoHash = "sha256-2rnaPN4C4pn9Whk5X2z1VVxm679EUpQdumJZx5uulr4=";
+      vendorHash = "sha256-mLMOArOz7TPYvHWtAtwCMV/LWMC8CkMDGFBDYW1Z4NM=";
+      cmd = "cmd/swag";
+    })
+
+    (derive.go {
+      owner = "wagoodman";
+      pname = "dive";
+      version = "v0.12.0";
+      repoHash = "sha256-CuVRFybsn7PVPgz3fz5ghpjOEOsTYTv6uUAgRgFewFw=";
+      vendorHash = "sha256-268qJPhGEd3BQdnalgHj102opOv7CV2Mkz1x+5Ztn/k=";
+      cmd = ".";
+    })
+
+    (derive.go {
+      owner = "jesseduffield";
+      pname = "lazydocker";
+      version = "v0.23.3";
+      repoHash = "sha256-1nw0X8sZBtBsxlEUDVYMAinjMEMlIlzjJ4s+WApeE6o=";
+      vendorHash = null;
+      cmd = ".";
+    })
+
+    (derive.rust {
       owner = "BurntSushi";
       pname = "ripgrep";
       version = "14.1.1";
       sha256 = "1s39cgazg9m5yrfyjh4qxgjwmvnn8znx8l09a6byh0zm31maf9c3";
     })
 
-    (rustPkg {
+    (derive.rust {
       owner = "sharkdp";
       pname = "fd";
       version = "v10.2.0";
       sha256 = "0hhcc9lvjxqipi48i1rhl6p86i5pjls4yk8l8wjba7qg3ai4xs87";
     })
 
-    (rustPkg {
+    (derive.rust {
       owner = "sharkdp";
       pname = "bat";
       version = "v0.24.0";
@@ -129,7 +159,7 @@ in
       ];
     })
 
-    (patchTar.download {
+    (derive.tar {
       pname = "neovim";
       bname = "nvim";
       version = "0.10.1";
@@ -145,6 +175,14 @@ in
     nil
     nixpkgs-fmt
     gopls
+    # (derive.go{
+    #   pname = "tools";
+    #   owner = "golang";
+    #   version = "gopls/v0.16.2";
+    #   repoHash = "sha256-amy00VMUcmyjDoZ4d9/+YswfcZ+1/cGvFsA4sAmc1dA=";
+    #   vendorHash = "sha256-hvxH1aaaDy+ahkKiq6QCQXQpMrobq8jZSW2OrDtqm10=";
+    #   cmd = "gopls/main.go";
+    # })
   ];
 
   # env vars
