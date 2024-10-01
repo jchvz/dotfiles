@@ -105,6 +105,15 @@ in
       cmd = ".";
     })
 
+    (derive.go {
+      owner = "jesseduffield";
+      pname = "lazydocker";
+      version = "v0.23.3";
+      repoHash = "sha256-1nw0X8sZBtBsxlEUDVYMAinjMEMlIlzjJ4s+WApeE6o=";
+      vendorHash = null;
+      cmd = ".";
+    })
+
     (derive.rust {
       owner = "BurntSushi";
       pname = "ripgrep";
