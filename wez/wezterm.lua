@@ -1,0 +1,1 @@
+/mnt/c/Users/14153/.wezterm.lua
