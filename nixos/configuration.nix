@@ -9,6 +9,7 @@ in
 
   users. users. john = {
     shell = pkgs.fish;
+    extraGroups = ["docker"];
   };
 
   nix.gc = {
@@ -18,6 +19,7 @@ in
   };
   nixpkgs.config.allowUnfree = true;
 
+  virtualisation.docker.enable=true;
 
   # builtlin programs
   programs = {
@@ -80,6 +82,16 @@ in
     tree
     zip
     unzip
+    docker
+
+    (derive.go {
+      owner = "swaggo";
+      pname = "swag";
+      version = "v1.8.12";
+      repoHash = "sha256-2rnaPN4C4pn9Whk5X2z1VVxm679EUpQdumJZx5uulr4=";
+      vendorHash = "sha256-mLMOArOz7TPYvHWtAtwCMV/LWMC8CkMDGFBDYW1Z4NM=";
+      cmd = "cmd/swag";
+    })
 
     (derive.rust {
       owner = "BurntSushi";
