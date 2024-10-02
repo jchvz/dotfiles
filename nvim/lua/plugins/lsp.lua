@@ -51,6 +51,9 @@ return {
       cmd = { nixPath 'gopls', 'serve' },
       filetypes = { 'go', 'gomod', 'gowork' },
       root_dir = require('lspconfig.util').root_pattern('go.mod', '.git'),
+      settings = {
+        gopls = { env = { GOPROXY = 'direct' } },
+      },
     }
   end,
 }
