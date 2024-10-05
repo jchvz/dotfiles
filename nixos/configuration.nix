@@ -12,11 +12,17 @@ in
     extraGroups = ["docker"];
   };
 
-  nix.gc = {
-    automatic = true;
-    dates = "03:13"; #3h13m
-    options = "-d";
+  nix ={
+    gc = {
+      automatic = true;
+      dates = "03:13"; #3h13m
+      options = "-d";
+    };
+    extraOptions = ''
+      experimental-features = nix-command
+    '';
   };
+  
   nixpkgs.config.allowUnfree = true;
 
   virtualisation.docker.enable=true;
@@ -71,7 +77,6 @@ in
     #enable=true;
     #vimAlias=true;
     #};
-    npm.enable = true;
     #ssh.enable=true;
   };
 
@@ -80,12 +85,17 @@ in
     go
     gcc
     zig
-    nodejs
+    nodejs_18
+    nodePackages.svelte-language-server
     gnumake
     tree
     zip
     unzip
     docker
+    wget
+    curl
+    jq
+    helix # TODO: rust.derive
 
     (derive.go {
       owner = "swaggo";
@@ -114,12 +124,34 @@ in
       cmd = ".";
     })
 
+    (derive.go{
+      owner = "jesseduffield";
+      pname = "lazygit";
+      version = "v0.44.1";
+      repoHash = "sha256-BP5PMgRq8LHLuUYDrWaX1PgfT9VEhj3xeLE2aDMAPF0=";
+      vendorHash = null;
+      cmd = ".";
+    })
+
     (derive.rust {
       owner = "BurntSushi";
       pname = "ripgrep";
       version = "14.1.1";
       sha256 = "1s39cgazg9m5yrfyjh4qxgjwmvnn8znx8l09a6byh0zm31maf9c3";
     })
+
+    # (derive.rust {
+    #   owner = "helix-editor";
+    #   pname = "helix";
+    #   version = "v0.6.0";
+    #   sha256 = "0hhcc9lvjxqipi48i1rhl6p86i5pjls4yk8l8wjba7qg3ai4xs87";
+    #   buildInputs = [pkgs.more];
+    # }).overrideAttrs (oldAttrs: {
+    #   # cargo build on helix for some evil reason replaces `fd`
+    #   postInstall = ''
+    #     rm -f $out/bin/fd
+    #   '';
+    # })
 
     (derive.rust {
       owner = "sharkdp";

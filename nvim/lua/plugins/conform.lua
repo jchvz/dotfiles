@@ -1,4 +1,6 @@
-return {}
+return {
+  'stevarc/conform.nvim',
+}
 -- return {
 --   'stevearc/conform.nvim',
 --   config = function()

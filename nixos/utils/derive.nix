@@ -28,6 +28,7 @@
     let
       repoPath = pkgs.fetchFromGitHub {
         inherit owner sha256;
+        # TODO: migrate to hash not sha -- slightly easier with fakeHash
         repo = pname;
         rev = version;
       };
