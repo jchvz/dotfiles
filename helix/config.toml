@@ -26,5 +26,8 @@ skip-levels=1
 
 [keys.normal]
 h = {i =[":sh echo hi"]} # little test
-g = {H = [":sh /home/john/.config/helix/bin/copy_github_link.fish %"]}
-e = {f = [":sh echo <c-r>%<CR>"]}
+# g = {H = [":sh /home/john/.config/helix/bin/copy_github_link.fish %"]}
+# e = {f = [":sh echo <c-r>%<CR>"]}
+
+# [keys.visual] # not allowed :-(
+# y = "y+"

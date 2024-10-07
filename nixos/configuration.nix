@@ -42,12 +42,16 @@ in
         #pr_summary = "";
 
         # Nix
-        nxc = "sudo -E nvim /etc/nixos/configuration.nix";
+        nxc = "sudo -E hx /etc/nixos/configuration.nix";
         nxs = "sudo nixos-rebuild switch";
         nxurl = "nix-prefetch-url";
 
         # Docker
         dps = "docker ps";
+
+        # Lazy
+        lzg = "lazygit";
+        lzd = "lazydocker";
 
         # Transparent replacements
         cat = "bat";
