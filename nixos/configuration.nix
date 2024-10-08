@@ -18,13 +18,14 @@ in
       dates = "03:13"; #3h13m
       options = "-d";
     };
-    extraOptions = ''
-      experimental-features = nix-command
-    '';
+    # extraOptions = ''
+    #   experimental-features = nix-command flakes
+    # '';
+    settings.experimental-features = [ "nix-command" "flakes" ];
   };
   
   nixpkgs.config.allowUnfree = true;
-
+ 
   virtualisation.docker.enable=true;
 
   # builtlin programs
@@ -42,7 +43,7 @@ in
         #pr_summary = "";
 
         # Nix
-        nxc = "sudo -E hx /etc/nixos/configuration.nix";
+        nxc = "sudo -E nvim /etc/nixos/configuration.nix";
         nxs = "sudo nixos-rebuild switch";
         nxurl = "nix-prefetch-url";
 
@@ -99,8 +100,9 @@ in
     wget
     curl
     jq
-    helix # TODO: rust.derive
-
+    # Literally takes >30 mins
+    (builtins.getFlake "github:helix-editor/helix").packages.${pkgs.system}.default
+  
     (derive.go {
       owner = "swaggo";
       pname = "swag";
