@@ -1,64 +1,53 @@
 local km = require 'utils.km'
 
-local function uniform_tele_config(custom_config)
-  custom_config = custom_config or {}
-
-  local default_config = {
-    layout_strategy = 'horizontal',
-    layout_config = { preview_width = 2 / 3 },
-  }
-
-  local merged_config = vim.tbl_deep_extend('force', default_config, custom_config)
-
-  return merged_config
-end
-
 return {
   'nvim-telescope/telescope.nvim',
+  opts = {},
   config = function()
+    require('telescope').setup {
+      defaults = {
+        -- Default configuration for telescope goes here:
+        layout_strategy = 'horizontal',
+        layout_config = { preview_width = 2 / 3 },
+        file_ignore_patterns = { 'node_modules', 'vendor' },
+        mappings = {
+          i = {
+            ['<C-h>'] = 'which_key',
+          },
+        },
+      },
+    }
+
     local builtins = require 'telescope.builtin'
     -- Finds
     km.set('<leader>', builtins.buffers, '[ ] Find open buffers')
 
     -- Searches
-    km.set('sf', function()
-      builtins.find_files(uniform_tele_config {
-        -- Always ignore (pwd)/vendor/*
-        find_command = { 'fd', '--type', 'f', '--exclude', 'vendor' },
-      })
-    end, '[S]earch [F]iles')
+    km.set('sf', builtins.find_files, '[S]earch [F]iles')
+    km.set('sh', builtins.help_tags, '[S]earch [H]elp')
+    km.set('sk', builtins.keymaps, '[S]earch [K]eymaps')
 
-    km.set('sh', function()
-      builtins.help_tags(uniform_tele_config {})
-    end, '[S]earch [H]elp')
-
-    km.set('sk', function()
-      builtins.keymaps(uniform_tele_config {})
-    end, '[S]earch [K]eymaps')
-
-    km.set('sg', function()
-      builtins.live_grep(uniform_tele_config {})
-    end, '[S]earch by [G]rep')
+    km.set('sg', builtins.live_grep, '[S]earch by [G]rep')
 
     km.set('/', function()
-      builtins.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+      builtins.current_buffer_fuzzy_find {
         winblend = 10,
         previewer = false,
-      })
+      }
     end, '[/] Fuzz current buffer')
 
     -- Searching particular files (neovim, nixos)
     km.set('snv', function()
-      builtins.find_files(uniform_tele_config {
+      builtins.find_files {
         cwd = vim.fn.stdpath 'config',
-      })
+      }
     end, '[S]earch [N]eo[V]im files')
 
     -- TODO: handle sudo on editing configuration.nix
     km.set('snx', function()
-      builtins.find_files(uniform_tele_config {
+      builtins.find_files {
         cwd = '/etc/nixos/',
-      })
+      }
     end, '[S]earch [N]i[X]os files')
   end,
 }
