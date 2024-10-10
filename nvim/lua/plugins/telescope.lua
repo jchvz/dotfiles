@@ -33,6 +33,8 @@ return {
       builtins.current_buffer_fuzzy_find {
         winblend = 10,
         previewer = false,
+        layout_config = { height = 0.5 },
+        sorting_strategy = 'descending',
       }
     end, '[/] Fuzz current buffer')
 

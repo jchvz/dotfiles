@@ -1,3 +1,5 @@
+local km = require 'utils.km'
+
 local function nixPath(bin)
   if type(bin) == 'string' then
     bin = { bin }
@@ -14,16 +16,21 @@ end
 
 return {
   'neovim/nvim-lspconfig',
+
+  dependencies = {
+    'hrsh7th/nvim-cmp',
+  },
+
   config = function()
     local lspconf = require 'lspconfig'
-    --local capz = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+    local capz = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
+    -- Helper for registering LSP servers
     local function add_lsp(server, bin, custom_config)
       custom_config = custom_config or {}
 
-      -- Set default capabilities
       local default_config = {
-        --capabilities = capz,
+        capabilities = capz,
         cmd = nixPath(bin),
       }
 
@@ -32,6 +39,7 @@ return {
       lspconf[server].setup(merged_config)
     end
 
+    -- Register all LSP servers
     add_lsp('nil_ls', 'nil')
     add_lsp('gopls', { 'gopls', 'serve' })
     add_lsp('lua_ls', { 'lua-language-server', '-E' }, {
@@ -54,5 +62,22 @@ return {
         },
       },
     })
+
+    local tele = require 'telescope.builtin'
+
+    km.set('lh', vim.lsp.buf.hover, '[L]SP [H]over')
+    km.set('ld', tele.lsp_definitions, '[L]SP [D]efinition') -- fairly grim if there are multiple but it can happen
+    km.set('lh', tele.lsp_references, '[L]SP [R]eferences')
+    km.set('lt', tele.lsp_type_definitions, '[L]SP [T]ypeDef')
+    km.set('li', tele.lsp_implementations, '[L]SP [I]mplementations')
+
+    -- Symbol pickers
+    km.set('ls', tele.lsp_document_symbols, '[L]SP [S]ymbols')
+    km.set('lf', function()
+      tele.lsp_document_symbols { symbols = { 'function', 'method' } }
+    end, '[L]SP [F]unctions')
+    km.set('lo', function()
+      tele.lsp_document_symbols { symbols = { 'variable', 'constant' } }
+    end, '[L]SP [O]bjects')
   end,
 }
