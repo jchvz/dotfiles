@@ -10,11 +10,11 @@ return {
         layout_strategy = 'horizontal',
         layout_config = { preview_width = 2 / 3 },
         file_ignore_patterns = { 'node_modules', 'vendor' },
-        mappings = {
-          i = {
-            ['<C-h>'] = 'which_key',
-          },
-        },
+        -- mappings = {
+        --   i = {
+        --     ['<C-h>'] = 'which_key',
+        --   },
+        -- },
       },
     }
 

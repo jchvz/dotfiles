@@ -9,6 +9,7 @@ vim.opt.background = 'light'
 vim.cmd 'colorscheme vim' -- avoids flash of color before everforest load
 
 -- Clipboard
+vim.opt.clipboard = 'unnamedplus'
 vim.g.clipboard = {
   name = 'WSLClipboard',
   copy = {
@@ -21,8 +22,3 @@ vim.g.clipboard = {
   },
   cache_enabled = 0,
 }
-
--- TODO: this is a little bit aggressive, maybe find another way
-vim.api.nvim_set_keymap('n', 'y', '"+y', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('v', 'y', '"+y', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', 'Y', '"+Y', { noremap = true, silent = true })
