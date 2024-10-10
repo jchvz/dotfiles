@@ -101,7 +101,8 @@ in
     curl
     jq
     # Literally takes >30 mins
-    (builtins.getFlake "github:helix-editor/helix").packages.${pkgs.system}.default
+    #(builtins.getFlake "github:helix-editor/helix").packages.${pkgs.system}.default
+    helix
   
     (derive.go {
       owner = "swaggo";
@@ -213,6 +214,7 @@ in
     nil
     nixpkgs-fmt
     gopls
+    prettierd
     # (derive.go{
     #   pname = "tools";
     #   owner = "golang";

@@ -1,0 +1,3 @@
+[submodule "vendor/lazy.nvim"]
+	path = vendor/lazy.nvim
+	url = git@github.com:folke/lazy.nvim.git

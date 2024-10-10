@@ -1,25 +1,48 @@
 local km = require 'utils.km'
 
 local function nixPath(bin)
-  return '/run/current-system/sw/bin/' .. bin
+  if type(bin) == 'string' then
+    bin = { bin }
+  end
+
+  local result = { '/run/current-system/sw/bin/' .. bin[1] }
+
+  for i = 2, #bin do
+    table.insert(result, bin[i])
+  end
+
+  return result
 end
 
 return {
   'neovim/nvim-lspconfig',
-  config = function()
-    local nvim_lsp = require 'lspconfig'
 
+  dependencies = {
+    'hrsh7th/nvim-cmp',
+  },
+
+  config = function()
+    local lspconf = require 'lspconfig'
     local capz = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-    -- All LSP servers get cool keybindings
-    --km.set("pr", lsp_utils.rename_symbol, "[L]sp [R]ename")
-    km.set('ph', vim.lsp.buf.hover, 'LS[P] [H]over')
-    --km.set("pu", lsp_utils.find_usages, "[L]sp [U]sages")
+    -- Helper for registering LSP servers
+    local function add_lsp(server, bin, custom_config)
+      custom_config = custom_config or {}
 
-    -- Lua specific config
-    nvim_lsp.lua_ls.setup {
-      cmd = { nixPath 'lua-language-server', '-E' },
-      capabilities = capz,
+      local default_config = {
+        capabilities = capz,
+        cmd = nixPath(bin),
+      }
+
+      local merged_config = vim.tbl_deep_extend('force', default_config, custom_config)
+
+      lspconf[server].setup(merged_config)
+    end
+
+    -- Register all LSP servers
+    add_lsp('nil_ls', 'nil')
+    add_lsp('gopls', { 'gopls', 'serve' })
+    add_lsp('lua_ls', { 'lua-language-server', '-E' }, {
       settings = {
         Lua = {
           runtime = {
@@ -38,23 +61,23 @@ return {
           },
         },
       },
-    }
+    })
 
-    -- Nix specific config
-    nvim_lsp.nil_ls.setup {
-      capabilities = capz,
-    }
+    local tele = require 'telescope.builtin'
 
-    -- Golang specific config
-    nvim_lsp.gopls.setup {
-      capabilities = capz,
-      cmd = { nixPath 'gopls', 'serve' },
-      filetypes = { 'go', 'gomod', 'gowork' },
-      -- root_dir = require('lspconfig.util').root_pattern('go.mod', '.git'),
-    }
+    km.set('lh', vim.lsp.buf.hover, '[L]SP [H]over')
+    km.set('ld', tele.lsp_definitions, '[L]SP [D]efinition') -- fairly grim if there are multiple but it can happen
+    km.set('lh', tele.lsp_references, '[L]SP [R]eferences')
+    km.set('lt', tele.lsp_type_definitions, '[L]SP [T]ypeDef')
+    km.set('li', tele.lsp_implementations, '[L]SP [I]mplementations')
 
-    nvim_lsp.svelte.setup {
-      capabilities = capz,
-    }
+    -- Symbol pickers
+    km.set('ls', tele.lsp_document_symbols, '[L]SP [S]ymbols')
+    km.set('lf', function()
+      tele.lsp_document_symbols { symbols = { 'function', 'method' } }
+    end, '[L]SP [F]unctions')
+    km.set('lo', function()
+      tele.lsp_document_symbols { symbols = { 'variable', 'constant' } }
+    end, '[L]SP [O]bjects')
   end,
 }

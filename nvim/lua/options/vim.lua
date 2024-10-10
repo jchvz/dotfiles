@@ -1,18 +1,14 @@
--- Editing
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 vim.opt.number = true
 vim.opt.relativenumber = false
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
-
--- Keys
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
+vim.opt.background = 'light'
+vim.cmd 'colorscheme vim' -- avoids flash of color before everforest load
 
 -- Clipboard
--- Unfortunately, we have to presuppose that Windows has been configured with win32yank.exe
--- installed + on the path. For posterity, the install script used in PowerShell on Windows:
--- winget install --id=equalsraf.win32yank -e
 vim.opt.clipboard = 'unnamedplus'
 vim.g.clipboard = {
   name = 'WSLClipboard',
@@ -24,5 +20,5 @@ vim.g.clipboard = {
     ['+'] = 'win32yank.exe -o',
     ['*'] = 'win32yank.exe -o',
   },
-  --   cache_enabled = 0,
+  cache_enabled = 0,
 }
