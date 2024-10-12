@@ -8,7 +8,11 @@ return {
       defaults = {
         -- Default configuration for telescope goes here:
         layout_strategy = 'horizontal',
-        layout_config = { preview_width = 2 / 3 },
+        sorting_strategy = 'ascending',
+        layout_config = {
+          preview_width = 2 / 3,
+          horizontal = { prompt_position = 'top' },
+        },
         file_ignore_patterns = { 'node_modules', 'vendor' },
         -- mappings = {
         --   i = {
@@ -34,7 +38,7 @@ return {
         winblend = 10,
         previewer = false,
         layout_config = { height = 0.5 },
-        sorting_strategy = 'descending',
+        sorting_strategy = 'ascending',
       }
     end, '[/] Fuzz current buffer')
 
