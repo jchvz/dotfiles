@@ -1,6 +1,6 @@
 { lib, pkgs, ... }:
 let
-  derive = import ./utils/derive.nix {inherit pkgs lib;};
+  derive = import ./utils/derive.nix { inherit pkgs lib; };
 in
 {
   imports = [
@@ -9,10 +9,10 @@ in
 
   users. users. john = {
     shell = pkgs.fish;
-    extraGroups = ["docker"];
+    extraGroups = [ "docker" ];
   };
 
-  nix ={
+  nix = {
     gc = {
       automatic = true;
       dates = "03:13"; #3h13m
@@ -23,10 +23,10 @@ in
     # '';
     settings.experimental-features = [ "nix-command" "flakes" ];
   };
-  
+
   nixpkgs.config.allowUnfree = true;
- 
-  virtualisation.docker.enable=true;
+
+  virtualisation.docker.enable = true;
 
   # builtlin programs
   programs = {
@@ -103,7 +103,8 @@ in
     # Literally takes >30 mins
     #(builtins.getFlake "github:helix-editor/helix").packages.${pkgs.system}.default
     helix
-  
+    # gh
+
     (derive.go {
       owner = "swaggo";
       pname = "swag";
@@ -131,7 +132,7 @@ in
       cmd = ".";
     })
 
-    (derive.go{
+    (derive.go {
       owner = "jesseduffield";
       pname = "lazygit";
       version = "v0.44.1";

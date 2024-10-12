@@ -1,0 +1,28 @@
+local M = {}
+
+local function exec_and_strip(cmd)
+  local redirect_and_strip = " 2> /dev/null | tr -d '\n'"
+  return vim.fn.system(cmd .. redirect_and_strip)
+end
+
+local function format_repo_as_gh_url(repo)
+  -- Example:
+  -- -- input: git@github.com:jchvz/dotfiles.git
+  -- -- output: https://github.com/jchvz/dotfiles/blob/
+  repo = repo:gsub('^git@github.com:', 'https://github.com/')
+  repo = repo:gsub('%.git$', '/blob/')
+  return repo
+end
+
+function M.get_repo_path()
+  local repo = exec_and_strip 'git config --get remote.origin.url'
+  local branch = exec_and_strip 'git branch --show-current'
+  local file = vim.fn.expand '%'
+  local line = vim.fn.line '.'
+
+  repo = format_repo_as_gh_url(repo)
+
+  print(repo .. branch .. file .. '#' .. line)
+end
+
+return M
