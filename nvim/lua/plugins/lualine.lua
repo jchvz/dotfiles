@@ -35,8 +35,6 @@ return {
   end,
   opts = function()
     local mini = require 'mini.icons'
-    local gitIcon = mini.get('file', '.git') --'󰊢'
-    local lspIcon = mini.get('lsp', 'struct')
     return {
       options = {
         icons_enabled = true,

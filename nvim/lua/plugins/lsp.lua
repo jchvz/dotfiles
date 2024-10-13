@@ -65,20 +65,24 @@ return {
 
     local tele = require 'telescope.builtin'
 
+    local function lsp_icn(name)
+      return km.get_icon('lsp', name, 'blue').icon
+    end
+
     km.set('lh', vim.lsp.buf.hover, '[L]SP [H]over')
-    km.set('ld', tele.lsp_definitions, '[L]SP [D]efinition') -- fairly grim if there are multiple but it can happen
-    km.set('lr', tele.lsp_references, '[L]SP [R]eferences')
-    km.set('l2', vim.lsp.buf.rename, '[L]SP Find[x]Replace')
-    km.set('lt', tele.lsp_type_definitions, '[L]SP [T]ypeDef')
+    km.set('ld', tele.lsp_definitions, lsp_icn 'event' .. '[L]SP [D]efinition') -- fairly grim if there are multiple but it can happen
+    km.set('lr', tele.lsp_references, lsp_icn 'reference' .. '[L]SP [R]eferences')
+    km.set('l2', vim.lsp.buf.rename, '[L]SP Rename X[2]Y')
+    km.set('lt', tele.lsp_type_definitions, lsp_icn 'typeparameter' .. '[L]SP [T]ypeDef')
     km.set('li', tele.lsp_implementations, '[L]SP [I]mplementations')
 
     -- Symbol pickers
     km.set('ls', tele.lsp_document_symbols, '[L]SP [S]ymbols')
     km.set('lf', function()
       tele.lsp_document_symbols { symbols = { 'function', 'method' } }
-    end, '[L]SP [F]unctions')
+    end, lsp_icn 'function' .. '[L]SP [F]unctions')
     km.set('lo', function()
       tele.lsp_document_symbols { symbols = { 'variable', 'constant' } }
-    end, '[L]SP [O]bjects')
+    end, lsp_icn 'object' .. '[L]SP [O]bjects')
   end,
 }
