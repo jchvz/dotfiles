@@ -67,7 +67,8 @@ return {
 
     km.set('lh', vim.lsp.buf.hover, '[L]SP [H]over')
     km.set('ld', tele.lsp_definitions, '[L]SP [D]efinition') -- fairly grim if there are multiple but it can happen
-    km.set('lh', tele.lsp_references, '[L]SP [R]eferences')
+    km.set('lr', tele.lsp_references, '[L]SP [R]eferences')
+    km.set('l2', vim.lsp.buf.rename, '[L]SP Find[x]Replace')
     km.set('lt', tele.lsp_type_definitions, '[L]SP [T]ypeDef')
     km.set('li', tele.lsp_implementations, '[L]SP [I]mplementations')
 

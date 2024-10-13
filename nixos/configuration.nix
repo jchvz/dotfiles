@@ -100,6 +100,7 @@ in
     wget
     curl
     jq
+    wslu
     # Literally takes >30 mins
     #(builtins.getFlake "github:helix-editor/helix").packages.${pkgs.system}.default
     helix
