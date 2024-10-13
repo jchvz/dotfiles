@@ -44,6 +44,7 @@ return {
     add_lsp('gopls', { 'gopls', 'serve' }, {
       settings = {
         gopls = {
+          buildFlags = { '-tags=wireinject' },
           gofumpt = true,
           staticcheck = true,
         },
