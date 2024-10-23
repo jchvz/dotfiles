@@ -59,6 +59,9 @@ in
         vim = "nvim";
         grep = "rg";
         find = "fd";
+
+        # Saporo
+        spr_env = "source ~/saporo/.env";
       };
     };
     fzf = {
@@ -92,6 +95,8 @@ in
     zig
     nodejs_18
     nodePackages.svelte-language-server
+    python3
+    python311Packages.pip
     gnumake
     tree
     zip
