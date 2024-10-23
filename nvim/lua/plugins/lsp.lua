@@ -92,6 +92,9 @@ return {
         },
       },
     })
+    add_lsp('pyright', { 'pyright-langserver', '--stdio' }, {
+      settings = { python = {} },
+    })
 
     local tele = require 'telescope.builtin'
 

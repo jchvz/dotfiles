@@ -81,11 +81,6 @@ in
         hide_userland_threads = true;
       };
     };
-    #neovim = {
-    #enable=true;
-    #vimAlias=true;
-    #};
-    #ssh.enable=true;
   };
 
   # system packages
@@ -95,8 +90,14 @@ in
     zig
     nodejs_18
     nodePackages.svelte-language-server
-    python3
-    python311Packages.pip
+    nodePackages.pyright
+    nodePackages.eslint
+    nodePackages.prettier
+    nodePackages.typescript
+    (python3.withPackages (ps: with ps; [
+      pandas
+      black
+    ]))
     gnumake
     tree
     zip
@@ -109,7 +110,8 @@ in
     # Literally takes >30 mins
     #(builtins.getFlake "github:helix-editor/helix").packages.${pkgs.system}.default
     helix
-    # gh
+    hyperfine
+    btop
 
     (derive.go {
       owner = "swaggo";

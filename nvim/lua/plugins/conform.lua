@@ -6,7 +6,7 @@ return {
         lua = { 'stylua' },
         nix = { 'nixpkgs_fmt' },
         go = { 'gofmt' },
-        --python = { 'black' },
+        python = { 'black' },
         javascript = { 'prettierd' },
         -- Add more filetypes and formatters as needed
       },
