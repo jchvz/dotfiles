@@ -95,9 +95,10 @@ in
     nodePackages.prettier
     nodePackages.typescript
     (python3.withPackages (ps: with ps; [
-      pandas
       black
+      setuptools
     ]))
+    uv
     gnumake
     tree
     zip
